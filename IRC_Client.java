@@ -6,12 +6,20 @@ class IRC_Client
 {
    public static void main(String args[]) throws Exception
    {
+      String ipaddress = "localhost";
+      String port = "6789";
       String sentence;
       String modifiedSentence;
       String userQuit = "/quit";
       
+      if(args.length > 1)
+      {
+         ipaddress = args[0];
+         port = args[1];
+      }
+      
       BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
-      Socket clientSocket = new Socket("localhost", 6789);
+      Socket clientSocket = new Socket(ipaddress, Integer.parseInt(port));
       while(!clientSocket.isConnected())
       {
       }
