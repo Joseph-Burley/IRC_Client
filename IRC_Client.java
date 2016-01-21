@@ -8,8 +8,7 @@ class IRC_Client
    {
       String ipaddress = "localhost";
       String port = "6789";
-      String sentence;
-      String modifiedSentence;
+      String sentence = "";
       String userQuit = "/quit";
       
       if(args.length > 1)
@@ -27,11 +26,18 @@ class IRC_Client
       DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
       BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
       
+      System.out.println("Enter a line or \"/quit\"");
       do
       {
-         System.out.println("Enter a line or \"/quit\"");
-         sentence = inFromUser.readLine();
-         outToServer.writeBytes(sentence + '\n');
+         if(inFromUser.ready())
+         {
+            sentence = inFromUser.readLine();
+            outToServer.writeBytes(sentence + '\n');
+         }
+         if(inFromServer.ready())
+         {
+            System.out.println(inFromServer.readLine());
+         }
          /*
          if(!sentence.equals(userQuit))
          {
