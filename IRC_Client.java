@@ -1,6 +1,7 @@
 //creates a client
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 
 class IRC_Client
 {
@@ -17,7 +18,7 @@ class IRC_Client
          port = args[1];
       }
       
-      BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+      Scanner inFromUser = new Scanner(System.in);
       Socket clientSocket = new Socket(ipaddress, Integer.parseInt(port));
       while(!clientSocket.isConnected())
       {
@@ -29,9 +30,9 @@ class IRC_Client
       System.out.println("Enter a line or \"/quit\"");
       do
       {
-         if(inFromUser.ready())
+         if(inFromUser.hasNextLine())
          {
-            sentence = inFromUser.readLine();
+            sentence = inFromUser.nextLine();
             outToServer.writeBytes(sentence + '\n');
          }
          if(inFromServer.ready())
