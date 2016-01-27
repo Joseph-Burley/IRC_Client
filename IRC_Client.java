@@ -33,19 +33,13 @@ class IRC_Client
          if(inFromUser.hasNextLine())
          {
             sentence = inFromUser.nextLine();
-            outToServer.writeBytes(sentence + '\n');
+            outToServer.writeBytes(sentence + '\n');//try using outToServer.newLine() instead?
+            outToServer.flush();
          }
          if(inFromServer.ready())
          {
             System.out.println(inFromServer.readLine());
          }
-         /*
-         if(!sentence.equals(userQuit))
-         {
-            modifiedSentence = inFromServer.readLine();
-            System.out.println("From Server: " + modifiedSentence);
-         }
-         */
       }while(!sentence.equals(userQuit));
       
       clientSocket.close();
