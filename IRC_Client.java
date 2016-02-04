@@ -11,6 +11,7 @@ class IRC_Client
       String port = "6789";
       String sentence = "";
       String userQuit = "/quit";
+      serverContact sc;
       
       if(args.length > 1)
       {
@@ -18,30 +19,33 @@ class IRC_Client
          port = args[1];
       }
       
+      //create io things
       Scanner inFromUser = new Scanner(System.in);
       Socket clientSocket = new Socket(ipaddress, Integer.parseInt(port));
       while(!clientSocket.isConnected())
       {
       }
+      BufferedWriter outToServer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+      //start socket thread
+      sc = new serverContact(clientSocket);
+      sc.start();
       System.out.println("Client is connected");
-      DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-      BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+      
+      
       
       System.out.println("Enter a line or \"/quit\"");
       do
       {
-         if(inFromUser.hasNextLine())
-         {
+         
             sentence = inFromUser.nextLine();
-            outToServer.writeBytes(sentence + '\n');//try using outToServer.newLine() instead?
+            outToServer.write(sentence, 0, sentence.length());//try using outToServer.newLine() instead?
+            outToServer.newLine();
             outToServer.flush();
-         }
-         if(inFromServer.ready())
-         {
-            System.out.println(inFromServer.readLine());
-         }
+        
+         
       }while(!sentence.equals(userQuit));
       
+      sc.quit();
       clientSocket.close();
    }
 }
