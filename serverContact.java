@@ -7,6 +7,8 @@ public class serverContact extends Thread
    private BufferedReader inFromServer;
    private boolean running = true;
    private String sentence = "";
+   
+   
    serverContact(Socket c)
    {
       clientSocket = c;
